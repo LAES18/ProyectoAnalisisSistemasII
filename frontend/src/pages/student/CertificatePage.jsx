@@ -1,0 +1,11 @@
+import { useState } from 'react';
+import { CheckCircle2, Download, FileText, ShieldCheck } from 'lucide-react';
+import { api, alertError, alertSuccess } from '../../services/api.js';
+import { PageHeader } from '../../components/ui.jsx';
+
+export default function CertificatePage() {
+  const [loading, setLoading] = useState(false);
+  const download = async () => { setLoading(true); try { const response = await api.get('/reports/certificate', { responseType: 'blob' }); const url = URL.createObjectURL(response.data); const anchor = document.createElement('a'); anchor.href = url; anchor.download = 'constancia-de-estudios.pdf'; anchor.click(); URL.revokeObjectURL(url); alertSuccess('Constancia generada.'); } catch (e) { alertError(e); } finally { setLoading(false); } };
+  return <><PageHeader eyebrow="Documentos" title="Constancia de estudios" description="Genera un comprobante actualizado de tus cursos activos y completados." /><div className="mx-auto max-w-3xl"><section className="card overflow-hidden"><div className="bg-gradient-to-br from-navy-950 via-blue-900 to-blue-700 p-8 text-white sm:p-10"><span className="mb-6 inline-flex rounded-2xl bg-white/10 p-4"><FileText size={34} /></span><h2 className="font-display text-3xl font-extrabold">Tu constancia, lista en segundos.</h2><p className="mt-3 max-w-xl text-blue-100">El documento incluye tu nombre, código estudiantil, cursos vigentes, fecha de emisión y firma institucional.</p></div><div className="p-7 sm:p-10"><div className="space-y-4">{['Información académica actualizada', 'Documento en formato PDF', 'Generación segura y personalizada'].map((text) => <div key={text} className="flex items-center gap-3 text-sm font-semibold text-slate-700"><CheckCircle2 className="text-emerald-500" size={20} />{text}</div>)}</div><div className="mt-8 flex flex-col items-start justify-between gap-4 rounded-2xl bg-slate-50 p-5 sm:flex-row sm:items-center"><div className="flex gap-3"><ShieldCheck className="text-blue-600" /><div><p className="font-bold text-navy-950">Documento verificable</p><p className="text-sm text-slate-500">Se genera directamente desde tus registros.</p></div></div><button onClick={download} disabled={loading} className="btn-primary w-full sm:w-auto"><Download size={18} />{loading ? 'Generando…' : 'Descargar constancia'}</button></div></div></section></div></>;
+}
+

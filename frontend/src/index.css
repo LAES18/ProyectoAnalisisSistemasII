@@ -1,0 +1,32 @@
+@import "tailwindcss";
+@config "../tailwind.config.js";
+
+@layer base {
+  * { @apply border-slate-200; }
+  html { @apply bg-cream antialiased; }
+  body { @apply m-0 min-w-[320px] bg-cream font-sans text-slate-800; }
+  button, a, input, select, textarea { @apply outline-none; }
+  button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { @apply ring-2 ring-blue-500 ring-offset-2; }
+}
+
+@layer components {
+  .card { @apply rounded-2xl border border-white/80 bg-white shadow-soft; }
+  .field { @apply w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-800 transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10; }
+  .label { @apply mb-1.5 block text-sm font-semibold text-slate-700; }
+  .btn-primary { @apply inline-flex items-center justify-center gap-2 rounded-xl bg-navy-900 px-4 py-2.5 text-sm font-bold text-white transition hover:bg-navy-800 disabled:cursor-not-allowed disabled:opacity-60; }
+  .btn-secondary { @apply inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 transition hover:bg-slate-50 disabled:opacity-60; }
+  .table-wrap { @apply overflow-x-auto rounded-2xl border border-slate-200 bg-white; }
+  .table-base { @apply w-full min-w-[720px] text-left text-sm; }
+  .table-base th { @apply border-b border-slate-200 bg-slate-50/80 px-5 py-3 text-xs font-bold uppercase tracking-wider text-slate-500; }
+  .table-base td { @apply border-b border-slate-100 px-5 py-4 align-middle; }
+  .table-base tr:last-child td { @apply border-b-0; }
+}
+
+.swal2-popup { border-radius: 1.25rem !important; font-family: 'DM Sans', sans-serif !important; }
+.swal2-confirm { border-radius: .75rem !important; background: #14244a !important; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
