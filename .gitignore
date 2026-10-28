@@ -1,0 +1,16 @@
+node_modules/
+dist/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+*.pem
+*.key
+*.sqlite
+*.db
+/Presentacion_Sistema_Academico.pptx
+/Presentacion_Sistema_Academico_Mejorada.pptx
+/Propuesta_Sistema_Academico-1.pdf
+/Sistema_Gestion_Academica_Documento_Final.pdf

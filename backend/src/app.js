@@ -1,0 +1,37 @@
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import rateLimit from 'express-rate-limit';
+import { env } from './config/env.js';
+import authRoutes from './routes/auth.routes.js';
+import usersRoutes from './routes/users.routes.js';
+import coursesRoutes from './routes/courses.routes.js';
+import enrollmentsRoutes from './routes/enrollments.routes.js';
+import gradesRoutes from './routes/grades.routes.js';
+import attendanceRoutes from './routes/attendance.routes.js';
+import dashboardRoutes from './routes/dashboard.routes.js';
+import reportsRoutes from './routes/reports.routes.js';
+import { errorHandler, notFound } from './middleware/errors.js';
+
+export const app = express();
+app.set('trust proxy', 1);
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+const allowedOrigins = env.frontendUrl.split(',').map((item) => item.trim());
+if (env.nodeEnv !== 'production') allowedOrigins.push(/^http:\/\/(?:localhost|127\.0\.0\.1):\d+$/);
+app.use(cors({ origin: allowedOrigins, credentials: true }));
+app.use(express.json({ limit: '1mb' }));
+app.use(morgan(env.nodeEnv === 'production' ? 'combined' : 'dev'));
+app.use('/api/auth/login', rateLimit({ windowMs: 15 * 60 * 1000, limit: 20, standardHeaders: true, legacyHeaders: false }));
+
+app.get('/api/health', (_req, res) => res.json({ success: true, status: 'ok', timestamp: new Date().toISOString() }));
+app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
+app.use('/api/courses', coursesRoutes);
+app.use('/api/enrollments', enrollmentsRoutes);
+app.use('/api/grades', gradesRoutes);
+app.use('/api/attendance', attendanceRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/reports', reportsRoutes);
+app.use(notFound);
+app.use(errorHandler);
